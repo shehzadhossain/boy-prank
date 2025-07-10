@@ -1,94 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Are you gay?</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body {
-      background-color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      height: 100vh;
-      position: relative;
-    }
-
-    h1 {
-      margin-top: 60px;
-      font-size: 28px;
-      font-weight: bold;
-    }
-
-    button {
-      font-size: 20px;
-      padding: 10px 30px;
-      margin: 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    #yesBtn {
-      background-color: #4CAF50;
-      color: white;
-    }
-
     #noBtn {
-      background-color: #f44336;
-      color: white;
       position: absolute;
-      left: 300px;
-      top: 150px;
       z-index: 10;
     }
   </style>
 </head>
-<body>
+<body class="bg-white h-screen overflow-hidden relative flex flex-col items-center justify-center text-center">
 
-  <h1>Are you gay?</h1>
-  <button id="yesBtn">Yes</button>
-  <button id="noBtn">No</button>
+  <!-- Shown on desktop -->
+  <div id="desktopWarning" class="hidden text-red-600 text-lg font-semibold">
+    ❌ This game only works on mobile devices!
+  </div>
+
+  <!-- Game area -->
+  <div id="gameContent" class="hidden w-full h-full flex flex-col items-center justify-center">
+    <h1 class="text-2xl font-bold mb-8">Are you gay?</h1>
+    <button id="yesBtn" class="bg-green-500 text-white px-6 py-2 rounded-lg text-lg shadow-md">Yes</button>
+    <button id="noBtn" class="bg-red-500 text-white px-6 py-2 rounded-lg text-lg shadow-md">No</button>
+  </div>
 
   <script>
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const gameContent = document.getElementById('gameContent');
+    const desktopWarning = document.getElementById('desktopWarning');
+
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
+
+    if (isMobile) {
+      gameContent.classList.remove('hidden');
+    } else {
+      desktopWarning.classList.remove('hidden');
+    }
 
     function moveNoButton() {
       const screenWidth = window.innerWidth;
       const screenHeight = window.innerHeight;
 
-      const buttonWidth = 120;
-      const buttonHeight = 60;
-      const margin = 50;
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+      const margin = 30;
 
-      const maxX = screenWidth - buttonWidth - margin;
-      const maxY = screenHeight - buttonHeight - margin;
+      const maxX = screenWidth - btnWidth - margin;
+      const maxY = screenHeight - btnHeight - margin;
 
-      const x = Math.random() * maxX + margin / 2;
-      const y = Math.random() * maxY + margin / 2;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
 
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
     }
 
-    // Desktop (hover)
-    noBtn.addEventListener('mouseover', moveNoButton);
-
-    // Mobile (touch)
+    // Mobile tap escape
     noBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault(); // prevent accidental tap
+      e.preventDefault();
       moveNoButton();
     });
 
-    // Yes button logic
+    // Just in case for desktop hover (optional)
+    noBtn.addEventListener('mouseover', moveNoButton);
+
+    // Yes = alert + redirect
     yesBtn.addEventListener('click', () => {
-      alert('Thank you, Bro ❤️');
+      alert('Thank you, bro ❤️');
     });
   </script>
-
 </body>
 </html>
