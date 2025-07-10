@@ -12,11 +12,16 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
+      height: 100vh;
+      position: relative;
     }
+
     h1 {
-      margin-top: 80px;
-      font-size: 30px;
+      margin-top: 60px;
+      font-size: 28px;
+      font-weight: bold;
     }
+
     button {
       font-size: 20px;
       padding: 10px 30px;
@@ -26,16 +31,19 @@
       cursor: pointer;
       transition: 0.3s;
     }
+
     #yesBtn {
       background-color: #4CAF50;
       color: white;
     }
+
     #noBtn {
       background-color: #f44336;
       color: white;
       position: absolute;
-      left: 350px;
+      left: 300px;
       top: 150px;
+      z-index: 10;
     }
   </style>
 </head>
@@ -50,20 +58,35 @@
     const yesBtn = document.getElementById('yesBtn');
 
     function moveNoButton() {
-      const x = Math.random() * (window.innerWidth - 120);
-      const y = Math.random() * (window.innerHeight - 60);
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+
+      const buttonWidth = 120;
+      const buttonHeight = 60;
+      const margin = 50;
+
+      const maxX = screenWidth - buttonWidth - margin;
+      const maxY = screenHeight - buttonHeight - margin;
+
+      const x = Math.random() * maxX + margin / 2;
+      const y = Math.random() * maxY + margin / 2;
+
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
     }
 
+    // Desktop (hover)
     noBtn.addEventListener('mouseover', moveNoButton);
+
+    // Mobile (touch)
     noBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault();
+      e.preventDefault(); // prevent accidental tap
       moveNoButton();
     });
 
+    // Yes button logic
     yesBtn.addEventListener('click', () => {
-      alert('Thank you, Bro  ❤️');
+      alert('Thank you, Bro ❤️');
     });
   </script>
 
